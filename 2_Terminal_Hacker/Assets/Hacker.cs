@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hacker : MonoBehaviour {
+public class Hacker : MonoBehaviour
+{
 
     //Game configuration data
     string[] level1Passwords = { "books", "phone", "homework", "aisle", "borrow" };
@@ -21,13 +22,14 @@ public class Hacker : MonoBehaviour {
         ShowMainMenu();
     }
 
-	void ShowMainMenu(){
+    void ShowMainMenu()
+    {
         currentScreen = Screen.MainMenu;
-		Terminal.ClearScreen();
-		Terminal.WriteLine("You need info to solve a case.\nWhere would you like to hack into?\n\nPress 1 for the library\nPress 2 for city hall\nPress 3 for S.H.I.E.L.D.");
-	}
+        Terminal.ClearScreen();
+        Terminal.WriteLine("You need info to solve a case.\nWhere would you like to hack into?\n\nPress 1 for the library\nPress 2 for city hall\nPress 3 for S.H.I.E.L.D.");
+    }
 
-	void OnUserInput(string input)
+    void OnUserInput(string input)
     {
         if (input == "menu") //we can always return back to main menu
         {
@@ -46,7 +48,7 @@ public class Hacker : MonoBehaviour {
 
     private void RunMainMenu(string input)
     {
-        bool isValidLevelNumber = (input == "1" || input == "2" || input == "3" || input=="007");
+        bool isValidLevelNumber = (input == "1" || input == "2" || input == "3" || input == "007");
         if (isValidLevelNumber)
         {
             level = int.Parse(input);
@@ -58,8 +60,10 @@ public class Hacker : MonoBehaviour {
     {
         currentScreen = Screen.Password;
         Terminal.ClearScreen();
-        switch(level){
+        switch (level)
+        {
             case 1:
+                //individual WriteLine because of 007 Bond case
                 Terminal.WriteLine("Please enter your password: ");
                 password = level1Passwords[Random.Range(0, 5)];
                 break;
@@ -85,10 +89,73 @@ public class Hacker : MonoBehaviour {
     {
         if (input == password)
         {
-            Terminal.WriteLine("WELL DONE!");
+            DisplayWinScreen();
         }
-        else{
+        else
+        {
             Terminal.WriteLine("Sorry, wrong password!");
+        }
+    }
+
+    void DisplayWinScreen()
+    {
+        currentScreen = Screen.Win;
+        Terminal.ClearScreen();
+        ShowLevelReward();
+    }
+
+    void ShowLevelReward()
+    {
+        switch(level)
+        {
+            case 1:
+                Terminal.WriteLine("Have a book...");
+                Terminal.WriteLine(@"
+ 
+      ____________ 
+     /           //    
+    /           //
+   /           // 
+  /           //
+ /_________  //
+(___________(/                
+"
+                                  );
+
+                break;
+            case 2:
+                Terminal.WriteLine("Have a flag...");
+                Terminal.WriteLine(@"
+         _____________
+      / /____________/
+     / /____________/
+    / /____________/
+   / /____________/
+  / /
+ / /
+/_/
+             
+"
+                                  );
+                break;
+            case 3:
+                Terminal.WriteLine("Have an eagle...");
+                Terminal.WriteLine(@"
+        ___       _
+\      /   \     / \
+ \    /   --    /  /
+  \  /    \    /  /
+   \/      \__/  / 
+                /
+\__          _ /
+   \_ _     /
+       \___/
+"
+                                  );
+                break;
+            default:
+                Debug.LogError("Invalid level reached");
+                break;
         }
     }
 }
