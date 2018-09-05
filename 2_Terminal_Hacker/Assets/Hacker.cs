@@ -52,27 +52,33 @@ public class Hacker : MonoBehaviour
         if (isValidLevelNumber)
         {
             level = int.Parse(input);
-            StartGame();
+            AskForPassword();
         }
     }
 
-    void StartGame()
+    void AskForPassword()
     {
         currentScreen = Screen.Password;
         Terminal.ClearScreen();
+        SetRandomPassword();
+        if(level == 1 || level == 2 || level == 3)
+        {
+            Terminal.WriteLine("Enter your password, hint:" + password.Anagram());
+        }
+    }
+
+    private void SetRandomPassword()
+    {
         switch (level)
         {
             case 1:
                 //individual WriteLine because of 007 Bond case
-                Terminal.WriteLine("Please enter your password: ");
                 password = level1Passwords[Random.Range(0, 5)];
                 break;
             case 2:
-                Terminal.WriteLine("Please enter your password: ");
                 password = level2Passwords[Random.Range(0, 5)];
                 break;
             case 3:
-                Terminal.WriteLine("Please enter your password: ");
                 password = level3Passwords[Random.Range(0, 5)];
                 break;
             case 007:
@@ -93,7 +99,7 @@ public class Hacker : MonoBehaviour
         }
         else
         {
-            Terminal.WriteLine("Sorry, wrong password!");
+            AskForPassword();
         }
     }
 
